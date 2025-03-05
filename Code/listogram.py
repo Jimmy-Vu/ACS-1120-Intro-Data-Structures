@@ -21,24 +21,89 @@ class Listogram(list):
     def add_count(self, word, count=1):
         """Increase frequency count of given word by given count amount."""
         # TODO: Increase word frequency by count
+        # Check if word already exists in histogram
+        found = False
+        i = 0
+        while i < len(self):
+            word_in_list = self[i][0]
+            count_in_list = self[i][1]
+
+            # If we found the word
+            if word_in_list == word:
+                new_count = count_in_list + count
+                self[i] = (word, new_count)
+                self.tokens = self.tokens + count
+                found = True
+                break
+            i = i + 1
+
+        # If we didn't find the word, add it as new
+        if found == False:
+            self.append((word, count))
+            self.types = self.types + 1
+            self.tokens = self.tokens + count
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
         # TODO: Retrieve word frequency count
+        i = 0
+        while i < len(self):
+            current_word = self[i][0]
+            current_count = self[i][1]
+
+            if current_word == word:
+                return current_count
+            i = i + 1
+
+        # If we didn't find the word, return 0
+        return 0
 
     def __contains__(self, word):
         """Return boolean indicating if given word is in this histogram."""
         # TODO: Check if word is in this histogram
+        i = 0
+        while i < len(self):
+            current_word = self[i][0]
+            if current_word == word:
+                return True
+            i = i + 1
+        return False
 
     def index_of(self, target):
         """Return the index of entry containing given target word if found in
         this histogram, or None if target word is not found."""
         # TODO: Implement linear search to find index of entry with target word
+        i = 0
+        while i < len(self):
+            current_word = self[i][0]
+            if current_word == target:
+                return i
+            i = i + 1
+
+        return None
 
     def sample(self):
         """Return a word from this histogram, randomly sampled by weighting
         each word's probability of being chosen by its observed frequency."""
         # TODO: Randomly choose a word based on its frequency in this histogram
+        # First get the total number of all words
+        total_words = 0
+
+        for item in self:
+            word_count = item[1]
+            total_words = total_words + word_count
+
+        random_pick = random.uniform(0, total_words)
+
+        # Go through each word
+        running_total = 0
+        for item in self:
+            word = item[0]
+            count = item[1]
+            running_total = running_total + count
+
+            if running_total >= random_pick:
+                return word
 
 
 def print_histogram(word_list):
