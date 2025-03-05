@@ -31,7 +31,7 @@ class Listogram(list):
             # If we found the word
             if word_in_list == word:
                 new_count = count_in_list + count
-                self[i] = (word, new_count)
+                self[i] = [word, new_count]
                 self.tokens = self.tokens + count
                 found = True
                 break
@@ -39,8 +39,7 @@ class Listogram(list):
 
         # If we didn't find the word, add it as new
         if not found:
-            # Use tuple, not list
-            self.append((word, count))
+            self.append([word, count])
             self.types = self.types + 1
             self.tokens = self.tokens + count
 
